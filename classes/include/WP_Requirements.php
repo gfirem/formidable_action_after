@@ -173,6 +173,61 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 	}
 	
+	class WP_Plugins_Requirement {
+		public $plugins = array();
+		public $notFound = array();
+		private $notVersion = array();
+		
+		private function load_plugins_dependency() {
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		
+		function check() {
+			$this->load_plugins_dependency();
+			$result          = true;
+			$this->notFound  = array();
+			$this->notVerion = array();
+			if ( current_user_can( 'activate_plugins' ) && get_current_user_id() > 0 ) {
+				foreach ( $this->plugins as $plugin ) {
+					if ( ! is_plugin_active( $plugin['id'] ) ) {
+						$result = false;
+						array_push( $this->notFound, $plugin['name'] );
+					} else {
+						if ( isset( $plugin['min_version'] ) ) {
+							$plugin_path   = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin['id'];
+							$plugin_header = get_plugin_data( $plugin_path );
+							if ( ! empty( $plugin_header ) ) {
+								$version = version_compare( $plugin_header['Version'], $plugin['min_version'], '>=' );
+								if ( ! $version ) {
+									$result = false;
+									array_push( $this->notVersion, sprintf( WP_Requirements::_t( '%s %s minimum require %s' ), $plugin['name'], $plugin_header['Version'], $plugin['min_version'] ) );
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			return $result;
+		}
+		
+		function message() {
+			$result              = WP_Requirements::_t( "Requirements Plugins." );
+			$plugins_not_version = implode( ', ', $this->notVersion );
+			if ( ! empty( $this->notFound ) ) {
+				$plugins_not_found = implode( '</li><li class="requirement_sub_item">', $this->notFound );
+				$result .= "<ul class='requirement_sub_list'>" . sprintf( WP_Requirements::_t( " Not Found: %s" ), '<li class="requirement_sub_item">' . $plugins_not_found . '</li>' ) . "</ul>";
+			}
+			
+			if ( ! empty( $this->notVersion ) ) {
+				$plugins_not_version = implode( '</li><li class="requirement_sub_item">', $this->notVersion );
+				$result .= "<ul class='requirement_sub_list'>" . sprintf( WP_Requirements::_t( " Requirement Version Fail: %s" ), '<li class="requirement_sub_item">' . $plugins_not_version . '</li>' ) . "</ul>";
+			}
+			
+			return $result;
+		}
+	}
+	
 	class WP_PHP_Extension_Requirement {
 		public $extensions = array();
 		public $notFound = array();
@@ -239,8 +294,8 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 		
 		function resultsToNotice() {
-//			$html = $this->getStyles();
-			$html = $this->getHeading();
+			$html = $this->getStyles();
+			$html .= $this->getHeading();
 			foreach ( $this->results as $result ) {
 				if ( ! $result['satisfied'] ) {
 					$html .= $this->resultToNotice( $result );
@@ -269,7 +324,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 		
 		function getStyles() {
-			$styles = 'body { font-family: sans-serif; font-size: 12px; color: #a00; }; ';
+			$styles = '.requirement_sub_list{ margin-left: 50px; }.requirement_sub_item{margin-left: 15px;} ';
 			$styles = "<style type='text/css' scoped>$styles</style>";
 			
 			return $styles;
@@ -284,7 +339,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		 */
 		public function show_result( $file ) {
 			if ( is_multisite() ) {
-				add_action( 'network_admin_notices', function(){
+				add_action( 'network_admin_notices', function () {
 					echo $this->resultsToNotice();
 				} );
 				$plugins = get_site_option( 'active_sitewide_plugins' );
@@ -293,7 +348,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 					$result = update_site_option( 'active_sitewide_plugins', $plugins );
 				}
 			} else {
-				add_action( 'admin_notices', function(){
+				add_action( 'admin_notices', function () {
 					echo $this->resultsToNotice();
 				} );
 				$plugins = get_option( 'active_plugins' );

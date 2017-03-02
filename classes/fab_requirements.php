@@ -34,6 +34,11 @@ class fab_requirements extends WP_Requirements {
 			'mbstring',
 		);
 		array_push( $requirements, $requirement );
+		$requirement          = new WP_Plugins_Requirement();
+		$requirement->plugins = array(
+			array( 'id' => 'formidable/formidable.php', 'name' => 'Formidable', 'min_version' => '2.0.0' )
+		);
+		array_push( $requirements, $requirement );
 		
 		return $requirements;
 	}
