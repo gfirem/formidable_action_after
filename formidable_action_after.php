@@ -79,7 +79,7 @@ if ( ! class_exists( 'formidable_action_after' ) ) {
 				
 				$act_fs = fs_dynamic_init( array(
 					'id'                  => '838',
-					'slug'                => 'action_before',
+					'slug'                => 'formidable_action_after',
 					'type'                => 'plugin',
 					'public_key'          => 'pk_2d9d898b7a365dd4d7fabd1e72b85',
 					'is_premium'          => true,

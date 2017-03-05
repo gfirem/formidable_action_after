@@ -5,6 +5,30 @@ class faa_admin {
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'fs_is_submenu_visible_' . faa_manager::getSlug(), array( $this, 'handle_sub_menu' ), 10, 2 );
+	}
+	
+	public function handle_sub_menu( $is_visible, $menu_id ) {
+		if ( $menu_id == 'account' ) {
+			$is_visible = false;
+		}
+		
+		return $is_visible;
+	}
+	
+	/**
+	 * Adding the Admin Page
+	 */
+	public function admin_menu() {
+		add_menu_page( _faa( 'Action After for' ), _faa( 'Action After for' ), 'manage_options', faa_manager::getSlug(), array( $this, 'screen' ), 'dashicons-redo' );
+		do_action( 'wc4bp_add_submenu_page' );
+	}
+	
+	public function screen() {
+		formidable_action_after::getFreemius()->get_logger()->entrance();
+		formidable_action_after::getFreemius()->_account_page_load();
+		formidable_action_after::getFreemius()->_account_page_render();
 	}
 	
 	/**
