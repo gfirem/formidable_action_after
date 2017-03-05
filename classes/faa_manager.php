@@ -17,19 +17,20 @@ class faa_manager {
 		require_once FAA_CLASSES_PATH . 'faa_log.php';
 		
 		try {
-			if ( self::is_formidable_active() && formidable_action_after::getFreemius()->is_paying() ) {
+			if ( self::is_formidable_active() ) {
 				include FAA_CLASSES_PATH . 'faa_admin.php';
 				new faa_admin();
-				
-				include FAA_ACTIONS_PATH . 'faa_base.php';
-				include FAA_ACTIONS_PATH . 'faa_replace/faa_replace.php';
-				new faa_replace();
-				include FAA_ACTIONS_PATH . 'faa_delete_entry/faa_delete_entry.php';
-				new faa_delete_entry();
-				include FAA_ACTIONS_PATH . 'faa_delete_post/faa_delete_post.php';
-				new faa_delete_post();
-				
-				add_action( 'frm_registered_form_actions', array( $this, 'register_action' ) );
+				if ( formidable_action_after::getFreemius()->is_paying() ) {
+					include FAA_ACTIONS_PATH . 'faa_base.php';
+					include FAA_ACTIONS_PATH . 'faa_replace/faa_replace.php';
+					new faa_replace();
+					include FAA_ACTIONS_PATH . 'faa_delete_entry/faa_delete_entry.php';
+					new faa_delete_entry();
+					include FAA_ACTIONS_PATH . 'faa_delete_post/faa_delete_post.php';
+					new faa_delete_post();
+					
+					add_action( 'frm_registered_form_actions', array( $this, 'register_action' ) );
+				}
 			}
 		} catch ( Exception $ex ) {
 			faa_log::log( array(

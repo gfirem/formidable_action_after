@@ -3,10 +3,11 @@
 
 class faa_admin {
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'fs_is_submenu_visible_' . faa_manager::getSlug(), array( $this, 'handle_sub_menu' ), 10, 2 );
+		
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
+//		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
 	}
 	
 	public function handle_sub_menu( $is_visible, $menu_id ) {
