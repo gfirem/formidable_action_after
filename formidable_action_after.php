@@ -58,7 +58,7 @@ if ( ! class_exists( 'formidable_action_after' ) ) {
 				require_once FAA_CLASSES_PATH . 'faa_manager.php';
 				new faa_manager();
 			} else {
-				$fauxPlugin = new WP_Faux_Plugin( _faa( 'Formidable Action Before' ), $this->requirements->getResults() );
+				$fauxPlugin = new WP_Faux_Plugin( _faa( 'Formidable Action After' ), $this->requirements->getResults() );
 				$fauxPlugin->show_result( FAA_BASE_NAME );
 			}
 		}
