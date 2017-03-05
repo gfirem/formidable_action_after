@@ -17,9 +17,7 @@ class faa_manager {
 		require_once FAA_CLASSES_PATH . 'faa_log.php';
 		
 		try {
-			if ( self::is_formidable_active()
-//			     && self::$freemius->is_paying()
-			) {
+			if ( self::is_formidable_active() && formidable_action_after::getFreemius()->is_paying() ) {
 				include FAA_CLASSES_PATH . 'faa_admin.php';
 				new faa_admin();
 				
