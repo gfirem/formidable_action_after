@@ -23,9 +23,13 @@ class faa_manager {
 				include FAA_CLASSES_PATH . 'faa_admin.php';
 				new faa_admin();
 				
-				include FAA_ACTIONS_PATH.'faa_base.php';
-				include FAA_ACTIONS_PATH.'faa_replace/faa_replace.php';
+				include FAA_ACTIONS_PATH . 'faa_base.php';
+				include FAA_ACTIONS_PATH . 'faa_replace/faa_replace.php';
 				new faa_replace();
+				include FAA_ACTIONS_PATH . 'faa_delete_entry/faa_delete_entry.php';
+				new faa_delete_entry();
+				include FAA_ACTIONS_PATH . 'faa_delete_post/faa_delete_post.php';
+				new faa_delete_post();
 				
 				add_action( 'frm_registered_form_actions', array( $this, 'register_action' ) );
 			}

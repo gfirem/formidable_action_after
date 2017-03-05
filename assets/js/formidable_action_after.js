@@ -2,17 +2,17 @@ function frmActionAfter() {
 	var controller = false;
 
 	function onShowContainer() {
-		var fieldID = this.id.replace('faa_control_', ''),
+		var action_id = this.getAttribute('action_id'),
 			containerId = this.getAttribute('slug'),
-			container = jQuery('#' + containerId + '_' + fieldID);
+			container = jQuery('#' + containerId + '_' + action_id);
 
 		if (jQuery(this).is(':checked')) {
 			container.show();
-			jQuery(this).val('1');
+			// jQuery(this).val('1');
 		}
 		else {
 			container.hide();
-			jQuery(this).val('0');
+			// jQuery(this).val('0');
 		}
 	}
 

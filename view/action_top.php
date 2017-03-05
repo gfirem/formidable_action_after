@@ -17,8 +17,8 @@
 		}
 		echo "<div class='faa_action_inside'>";
 		echo "<h3 class='faa_action_head'>" . esc_attr( $faa_action->getName() ) . "</h3>";
-		echo '<input name="' . esc_attr( $faa_action->getName() ) . '" slug="' . esc_attr( $faa_action->getSlug() ) . '" ' . $checked . ' type="checkbox" class="faa_action" name="faa_control_' . esc_attr( $this->number ) . '" id="faa_control_' . esc_attr( $this->number ) . '" value="1"/>';
-		echo "<label for='faa_control_" . esc_attr( $this->number ) . "'>" . $faa_action->getDescription() . "</label>";
+		echo '<input  action_id="' . esc_attr( $action_control->number ) . '" name="' . esc_attr( $faa_action->getName() ) . '" slug="' . esc_attr( $faa_action->getSlug() ) . '" ' . $checked . ' type="checkbox" class="faa_action" name="' . esc_attr( $faa_action->getSlug() ) . '" id="' . esc_attr( $faa_action->getSlug() ) . '" value="' . esc_attr( $faa_control ) . '"/>';
+		echo "<label for='" . esc_attr( $faa_action->getSlug() ) . "'>" . $faa_action->getDescription() . "</label>";
 		echo "<hr/><div " . $style . " id='" . esc_attr( $faa_action->getSlug() ) . "_" . esc_attr( $this->number ) . "'>";
 		$faa_action->view( $form, $form_action, $action_control );
 		echo "</div></div>";
