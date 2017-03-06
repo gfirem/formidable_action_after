@@ -23,7 +23,6 @@ class faa_admin {
 	 */
 	public function admin_menu() {
 		add_menu_page( _faa( 'Action After for' ), _faa( 'Action After for' ), 'manage_options', faa_manager::getSlug(), array( $this, 'screen' ), 'dashicons-redo' );
-		do_action( 'wc4bp_add_submenu_page' );
 	}
 	
 	public function screen() {

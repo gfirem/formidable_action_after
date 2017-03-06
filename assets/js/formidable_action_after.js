@@ -8,11 +8,11 @@ function frmActionAfter() {
 
 		if (jQuery(this).is(':checked')) {
 			container.show();
-			// jQuery(this).val('1');
+			jQuery(this).val('1');
 		}
 		else {
 			container.hide();
-			// jQuery(this).val('0');
+			jQuery(this).val('0');
 		}
 	}
 
