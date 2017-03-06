@@ -19,6 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 if ( ! class_exists( 'formidable_action_after' ) ) {
 	
+	require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'faa_override.php';
+	act_fs();
 	class formidable_action_after {
 		
 		/**
@@ -46,9 +48,6 @@ if ( ! class_exists( 'formidable_action_after' ) ) {
 			define( 'FAA_CLASSES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR );
 			define( 'FAA_ACTIONS_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'actions' . DIRECTORY_SEPARATOR );
 			
-			self::$freemius = $this->start_freemius();
-			
-			require_once FAA_CLASSES_PATH . 'faa_override.php';
 			$this->load_plugin_textdomain();
 			
 			require_once FAA_CLASSES_PATH . '/include/WP_Requirements.php';
@@ -67,36 +66,7 @@ if ( ! class_exists( 'formidable_action_after' ) ) {
 		 * @return Freemius
 		 */
 		public static function getFreemius() {
-			return self::$freemius;
-		}
-		
-		public function start_freemius() {
 			global $act_fs;
-			
-			if ( ! isset( $act_fs ) ) {
-				// Include Freemius SDK.
-				require_once FAA_CLASSES_PATH . '/include/freemius/start.php';
-				
-				$act_fs = fs_dynamic_init( array(
-					'id'               => '838',
-					'slug'             => 'formidable_action_after',
-					'type'             => 'plugin',
-					'public_key'       => 'pk_2d9d898b7a365dd4d7fabd1e72b85',
-					'is_premium'       => true,
-					'is_premium_only'  => true,
-					'has_addons'       => false,
-					'has_paid_plans'   => true,
-					'is_org_compliant' => false,
-					'menu'             => array(
-						'slug'       => 'formidable_action_after',
-						'first-path' => 'admin.php?page=formidable_action_after',
-						'support'    => false,
-					),
-					// Set the SDK to work in a sandbox mode (for development & testing).
-					// IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
-					'secret_key'       => 'sk_6l4wmhM2&-XuD8e66;Kl+yir@:=<U',
-				) );
-			}
 			
 			return $act_fs;
 		}
