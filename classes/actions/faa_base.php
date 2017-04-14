@@ -1,10 +1,15 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class faa_base {
 	public $name;
 	public $description;
 	public $slug;
 	private $number;
+	public $plan;
 	
 	/**
 	 * faa_base constructor.
@@ -12,11 +17,13 @@ class faa_base {
 	 * @param $name
 	 * @param $description
 	 * @param $slug
+	 * @param string $plan
 	 */
-	public function __construct( $name, $description, $slug ) {
+	public function __construct( $name, $description, $slug, $plan = 'free' ) {
 		$this->name        = $name;
 		$this->description = $description;
 		$this->slug        = $slug;
+		$this->plan        = $plan;
 		
 		add_filter( 'faa_action_subscribe', array( $this, 'subscribe' ), 10, 2 );
 	}
@@ -35,15 +42,21 @@ class faa_base {
 		
 	}
 	
-	protected function replace_shortcode( $entry, $value ) {
-		$shortCodes = FrmFieldsHelper::get_shortcodes( $value, $entry->form_id );
-		$content    = apply_filters( 'frm_replace_content_shortcodes', $value, $entry, $shortCodes );
+	protected function replace_shortcode( $entry, $value, $form_id = '' ) {
+		if ( ! empty( $entry ) ) {
+			$form_id = $entry->form_id;
+			$shortCodes = FrmFieldsHelper::get_shortcodes( $value, $form_id );
+			$content    = apply_filters( 'frm_replace_content_shortcodes', $value, $entry, $shortCodes );
+		}
+		else{
+			$content = $value;
+		}
 		FrmProFieldsHelper::replace_non_standard_formidable_shortcodes( array(), $content );
 		
 		return do_shortcode( $content );
 	}
 	
-	public function get_defaults(){
+	public function get_defaults() {
 		return array();
 	}
 	

@@ -5,32 +5,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class faa_manager {
 	
-	private static $plugin_slug = 'formidable_action_after';
+	private static $plugin_slug = 'gfirem_action_after';
 	private static $plugin_short = 'faa';
 	protected static $version;
 	
 	public function __construct() {
-		self::load_plugins_dependency();
-		$plugins_header = get_plugin_data( FAA_BASE_FILE );
-		self::$version  = $plugins_header['Version'];
+		self::$version = '1.0.0';
 		
-		require_once FAA_CLASSES_PATH . 'faa_log.php';
+		require_once GFIREM_ACTION_AFTER_CLASSES_PATH . 'faa_log.php';
 		
 		try {
 			if ( self::is_formidable_active() ) {
-				include FAA_CLASSES_PATH . 'faa_admin.php';
+				include GFIREM_ACTION_AFTER_CLASSES_PATH . 'faa_admin.php';
 				new faa_admin();
-				if ( formidable_action_after::getFreemius()->is_paying() ) {
-					include FAA_ACTIONS_PATH . 'faa_base.php';
-					include FAA_ACTIONS_PATH . 'faa_replace/faa_replace.php';
-					new faa_replace();
-					include FAA_ACTIONS_PATH . 'faa_delete_entry/faa_delete_entry.php';
-					new faa_delete_entry();
-					include FAA_ACTIONS_PATH . 'faa_delete_post/faa_delete_post.php';
-					new faa_delete_post();
-					
-					add_action( 'frm_registered_form_actions', array( $this, 'register_action' ) );
-				}
+				
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_base.php';
+				
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_mycred/faa_mycred.php';
+				new faa_mycred();
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_replace/faa_replace.php';
+				new faa_replace();
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_delete_entry/faa_delete_entry.php';
+				new faa_delete_entry();
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_delete_post/faa_delete_post.php';
+				new faa_delete_post();
+				
+				add_action( 'frm_registered_form_actions', array( $this, 'register_action' ) );
+			} else {
+				//TODO need a meesages here to notice the user
 			}
 		} catch ( Exception $ex ) {
 			faa_log::log( array(
@@ -60,7 +62,7 @@ class faa_manager {
 	 * @return mixed
 	 */
 	public function register_action( $actions ) {
-		$actions['formidable_action_after'] = 'faa_action';
+		$actions['gfirem_action_after'] = 'faa_action';
 		require_once 'faa_action.php';
 		
 		return $actions;
@@ -71,7 +73,7 @@ class faa_manager {
 	 *
 	 * @return string
 	 */
-	static function getShort() {
+	public static function getShort() {
 		return self::$plugin_short;
 	}
 	
@@ -80,7 +82,7 @@ class faa_manager {
 	 *
 	 * @return mixed
 	 */
-	static function getVersion() {
+	public static function getVersion() {
 		return self::$version;
 	}
 	
@@ -89,7 +91,7 @@ class faa_manager {
 	 *
 	 * @return string
 	 */
-	static function getSlug() {
+	public static function getSlug() {
 		return self::$plugin_slug;
 	}
 }

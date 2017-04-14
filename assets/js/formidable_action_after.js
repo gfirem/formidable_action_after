@@ -20,7 +20,7 @@ function frmActionAfter() {
 		jQuery('.faa_action_container').each(function (i, obj) {
 			var action_id = jQuery(this).attr('action_id');
 			if (action_id) {
-				var faa_targets = jQuery("[name='frm_formidable_action_after_action[" + action_id + "][post_content][faa_action_enabled]']");
+				var faa_targets = jQuery("[name='frm_gfirem_action_after_action[" + action_id + "][post_content][faa_action_enabled]']");
 				var fields_values = jQuery('#faa_action_container_' + action_id + ' div.faa_action_inside').map(function (i, v) {
 					var $control = jQuery('.faa_action', this);
 					return {
@@ -74,7 +74,7 @@ function frmActionAfter() {
 
 			jQuery(document).bind('ajaxComplete ', function (event, xhr, settings) {
 				if (controller == false) {
-					if (settings.data.indexOf('frm_form_action_fill') != 0 && settings.data.indexOf('formidable_action_after') != 0) {
+					if (settings.data.indexOf('frm_form_action_fill') != 0 && settings.data.indexOf('gfirem_action_after') != 0) {
 						$formActions.on('click', '.faa_action', onShowContainer);
 						jQuery(document).on('focusin click', 'form input, form textarea, #wpcontent', function (e) {
 							e.stopPropagation();

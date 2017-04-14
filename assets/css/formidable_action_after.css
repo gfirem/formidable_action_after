@@ -1,0 +1,28 @@
+/*
+ * @package WordPress
+ * @subpackage Formidable, gfirem-action-after
+ * @author GFireM
+ * @copyright 2017
+ * @link http://www.gfirem.com
+ * @license http://www.apache.org/licenses/
+ *
+ */
+
+p.faa-disabled::after {
+	width: 72px;
+	height: 25px;
+	padding: 0;
+	clear: both;
+	display: inline;
+	float: left;
+	content: "Pro";
+	text-align: center;
+	font-size: 11px;
+	line-height: 2.1;
+	background: rgba(255, 24, 46, 0.56);
+	color: #fff;
+	border-radius: 5px;
+	position: relative;
+	margin-right: 10px;
+	margin-bottom: 3px;
+}

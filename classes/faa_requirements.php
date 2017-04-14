@@ -3,9 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class faa_requirements extends WP_Requirements {
+class faa_requirements extends gfirem_requirements {
 	
-	public function __construct( $text_domain = 'WP_Requirements' ) {
+	public function __construct( $text_domain = 'gfirem_requirements' ) {
 		parent::__construct( $text_domain );
 	}
 	
@@ -17,13 +17,10 @@ class faa_requirements extends WP_Requirements {
 	function getRequirements() {
 		$requirements                = array();
 		$requirement                 = new WP_PHP_Requirement();
-		$requirement->minimumVersion = '5.2.0';
+		$requirement->minimumVersion = '5.3.0';
 		array_push( $requirements, $requirement );
 		$requirement                 = new WP_WordPress_Requirement();
 		$requirement->minimumVersion = '4.6.2';
-		array_push( $requirements, $requirement );
-		$requirement = new WPMU_WordPress_Requirement();
-		$requirement->setIsForMultisite( false );
 		array_push( $requirements, $requirement );
 		$requirement          = new WP_Plugins_Requirement();
 		$requirement->plugins = array(

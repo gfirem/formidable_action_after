@@ -5,8 +5,8 @@
     <tr class="faa_row">
         <th>
             <label for="">
-                <b><?php _e_faa( 'Combination:' ); ?></b>
-                <span class="frm_help frm_icon_font frm_tooltip_icon" title="" data-original-title="<?php _e_faa( 'Create a name for your table here. When you update the form, it will be created in the DB for you and you can change the name later.' ); ?>"></span>
+                <b><?php _e( 'Combination:', 'gfirem_action_after' ); ?></b>
+                <span class="frm_help frm_icon_font frm_tooltip_icon" title="" data-original-title="<?php _e( 'Create a name for your table here. When you update the form, it will be created in the DB for you and you can change the name later.', 'gfirem_action_after' ); ?>"></span>
             </label>
         </th>
         <td>
@@ -17,7 +17,7 @@
                         <option value="<?php echo absint( $form_opts->id ) ?>"<?php selected( $form_opts->id, $row['values']->form_target ) ?>><?php echo FrmAppHelper::truncate( $form_opts->name, 30 ) ?></option>
 					<?php } ?>
                 </select>
-				<?php _e_faa( 'This is the form target, where the nexts fields will get.' ); ?>
+				<?php _e( 'This is the form target, where the nexts fields will get.', 'gfirem_action_after' ); ?>
                 <img id="faa_loading_<?= $action_control->number ?>" src="/wp-content/plugins/formidable/images/ajax_loader.gif" class="faa_loading"/>
             </p>
             <p>
@@ -25,14 +25,14 @@
 					<?php faa_replace::show_options_for_get_values_field( $row['data']['form_fields'], $row['field_filter'] ); ?>
                 </select>
                 <input action_id="<?php echo esc_attr( $action_control->number ) ?>" class="faa_field faa_field_filter_value" type="text" name="faa_target_field_filter_value_<?php echo esc_attr( $action_control->number ) ?>" id="faa_target_field_filter_value_<?php echo esc_attr( $action_control->number ) ?>" value="<?php echo esc_attr($row['values']->field_filter_value) ?>"/>
-				<?php _e_faa( 'Select the field to filter and set the value to search.' ); ?>
+				<?php _e( 'Select the field to filter and set the value to search.', 'gfirem_action_after' ); ?>
             </p>
             <p>
                 <select action_id="<?php echo esc_attr( $action_control->number ) ?>" class="faa_field faa_field_replace" id="faa_target_field_replace_<?php echo esc_attr( $action_control->number ) ?>" name="faa_target_field_replace_<?php echo esc_attr( $action_control->number ) ?>">
 					<?php faa_replace::show_options_for_get_values_field( $row['data']['form_fields'], $row['field_replace'] ); ?>
                 </select>
                 <input action_id="<?php echo esc_attr( $action_control->number ) ?>" class="faa_field faa_field_replace_value" type="text" name="faa_target_field_replace_value_<?php echo esc_attr( $action_control->number ) ?>" id="faa_target_field_replace_value_<?php echo esc_attr( $action_control->number ) ?>" value="<?php echo esc_attr($row['values']->field_replace_value) ?>"/>
-				<?php _e_faa( 'Select the field to replace the value and set the value itself.' ); ?>
+				<?php _e( 'Select the field to replace the value and set the value itself.', 'gfirem_action_after' ); ?>
             </p>
         </td>
     </tr>

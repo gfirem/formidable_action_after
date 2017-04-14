@@ -8,7 +8,7 @@ class faa_delete_entry extends faa_base {
 	public function __construct() {
 		parent::__construct(
 			'Delete Entry',
-			'This action delete an entry if the id exist',
+			'This Task delete an entry if the id exist',
 			'faa_delete_entry'
 		);
 	}

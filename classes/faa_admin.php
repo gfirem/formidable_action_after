@@ -7,7 +7,7 @@ class faa_admin {
 		add_action( 'fs_is_submenu_visible_' . faa_manager::getSlug(), array( $this, 'handle_sub_menu' ), 10, 2 );
 		
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
-//		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
 	}
 	
 	public function handle_sub_menu( $is_visible, $menu_id ) {
@@ -22,28 +22,32 @@ class faa_admin {
 	 * Adding the Admin Page
 	 */
 	public function admin_menu() {
-		add_menu_page( _faa( 'Action After for' ), _faa( 'Action After for' ), 'manage_options', faa_manager::getSlug(), array( $this, 'screen' ), 'dashicons-redo' );
+		add_menu_page( __( 'Action After for','gfirem_action_after' ), __( 'Action After for','gfirem_action_after' ), 'manage_options', faa_manager::getSlug(), array( $this, 'screen' ), 'dashicons-redo' );
 	}
 	
 	public function screen() {
-		formidable_action_after::getFreemius()->get_logger()->entrance();
-		formidable_action_after::getFreemius()->_account_page_load();
-		formidable_action_after::getFreemius()->_account_page_render();
+		faa_fs::getFreemius()->get_logger()->entrance();
+		if (faa_fs::getFreemius()->is_registered()) {
+			faa_fs::getFreemius()->_account_page_load();
+			faa_fs::getFreemius()->_account_page_render();
+		}
 	}
 	
 	/**
 	 * Include styles in admin
 	 */
 	public function enqueue_style() {
+		//TODO hacer que solo se incluya cuando es necesario
 		wp_enqueue_style( 'jquery' );
-		wp_enqueue_style( 'formidable_action_after', FAA_CSS_PATH . 'formidable_action_after.css', array(), faa_manager::getVersion() );
+		wp_enqueue_style( 'gfirem_action_after', GFIREM_ACTION_AFTER_CSS_PATH . 'formidable_action_after.css', array(), faa_manager::getVersion() );
 	}
 	
 	/**
 	 * Include script
 	 */
 	public function enqueue_js() {
-		wp_register_script( 'formidable_action_after', FAA_JS_PATH . 'formidable_action_after.js', array( "jquery" ), true );
-		wp_enqueue_script( 'formidable_action_after' );
+		//TODO hacer que solo se incluya cuando es necesario
+		wp_register_script( 'gfirem_action_after', GFIREM_ACTION_AFTER_JS_PATH . 'formidable_action_after.js', array( "jquery" ), true );
+		wp_enqueue_script( 'gfirem_action_after' );
 	}
 }

@@ -2,12 +2,12 @@
 /**
  * @see https://github.com/dsawardekar/wp-requirements
  */
-if ( class_exists( 'WP_Requirements' ) === false ) {
-	class WP_Requirements {
+if ( class_exists( 'gfirem_requirements' ) === false ) {
+	class gfirem_requirements {
 		private static $text_domain;
 		protected $results = array();
 		
-		public function __construct( $text_domain = 'WP_Requirements' ) {
+		public function __construct( $text_domain = 'gfirem_requirements' ) {
 			self::$text_domain = $text_domain;
 		}
 		
@@ -46,7 +46,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		
 	}
 	
-	class WP_Min_Requirements extends WP_Requirements {
+	class WP_Min_Requirements extends gfirem_requirements {
 		function getRequirements() {
 			$requirements = array();
 			// Min requirements for Composer
@@ -61,7 +61,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 	}
 	
-	class WP_Modern_Requirements extends WP_Requirements {
+	class WP_Modern_Requirements extends gfirem_requirements {
 		function getRequirements() {
 			$requirements                = array();
 			$requirement                 = new WP_PHP_Requirement();
@@ -89,7 +89,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 	}
 	
 	// For Testing
-	class WP_Failing_Requirements extends WP_Requirements {
+	class WP_Failing_Requirements extends gfirem_requirements {
 		function getRequirements() {
 			$requirements                = array();
 			$requirement                 = new WP_PHP_Requirement();
@@ -115,7 +115,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		function message() {
 			$version = phpversion();
 			
-			return sprintf( WP_Requirements::_t( "PHP %s+ Required, Detected %s" ), $this->minimumVersion, $version );
+			return sprintf( gfirem_requirements::_t( "PHP %s+ Required, Detected %s" ), $this->minimumVersion, $version );
 		}
 	}
 	
@@ -137,7 +137,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		function message() {
 			$version = $this->getWordPressVersion();
 			
-			return sprintf( WP_Requirements::_t( "WordPress %s+ Required, Detected %s" ), $this->minimumVersion, $version );
+			return sprintf( gfirem_requirements::_t( "WordPress %s+ Required, Detected %s" ), $this->minimumVersion, $version );
 		}
 	}
 	
@@ -149,11 +149,11 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 		
 		function message() {
-			$message = WP_Requirements::_t( 'This plugins is ' );
+			$message = gfirem_requirements::_t( 'This plugins is ' );
 			if ( ! $this->isForMultisite() ) {
-				$message .= WP_Requirements::_t( 'not ' );
+				$message .= gfirem_requirements::_t( 'not ' );
 			}
-			$message .= WP_Requirements::_t( 'for multisite installation.' );
+			$message .= gfirem_requirements::_t( 'for multisite installation.' );
 			
 			return $message;
 		}
@@ -200,7 +200,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 								$version = version_compare( $plugin_header['Version'], $plugin['min_version'], '>=' );
 								if ( ! $version ) {
 									$result = false;
-									array_push( $this->notVersion, sprintf( WP_Requirements::_t( '%s %s minimum require %s' ), $plugin['name'], $plugin_header['Version'], $plugin['min_version'] ) );
+									array_push( $this->notVersion, sprintf( gfirem_requirements::_t( '%s %s minimum require %s' ), $plugin['name'], $plugin_header['Version'], $plugin['min_version'] ) );
 								}
 							}
 						}
@@ -212,16 +212,16 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 		
 		function message() {
-			$result              = WP_Requirements::_t( "Requirements Plugins." );
+			$result              = gfirem_requirements::_t( "Requirements Plugins." );
 			$plugins_not_version = implode( ', ', $this->notVersion );
 			if ( ! empty( $this->notFound ) ) {
 				$plugins_not_found = implode( '</li><li class="requirement_sub_item">', $this->notFound );
-				$result .= "<ul class='requirement_sub_list'>" . sprintf( WP_Requirements::_t( " Not Found: %s" ), '<li class="requirement_sub_item">' . $plugins_not_found . '</li>' ) . "</ul>";
+				$result .= "<ul class='requirement_sub_list'>" . sprintf( gfirem_requirements::_t( " Not Found: %s" ), '<li class="requirement_sub_item">' . $plugins_not_found . '</li>' ) . "</ul>";
 			}
 			
 			if ( ! empty( $this->notVersion ) ) {
 				$plugins_not_version = implode( '</li><li class="requirement_sub_item">', $this->notVersion );
-				$result .= "<ul class='requirement_sub_list'>" . sprintf( WP_Requirements::_t( " Requirement Version Fail: %s" ), '<li class="requirement_sub_item">' . $plugins_not_version . '</li>' ) . "</ul>";
+				$result .= "<ul class='requirement_sub_list'>" . sprintf( gfirem_requirements::_t( " Requirement Version Fail: %s" ), '<li class="requirement_sub_item">' . $plugins_not_version . '</li>' ) . "</ul>";
 			}
 			
 			return $result;
@@ -248,7 +248,7 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		function message() {
 			$extensions = implode( ', ', $this->notFound );
 			
-			return sprintf( WP_Requirements::_t( "PHP Extensions Not Found: %s" ), $extensions );
+			return sprintf( gfirem_requirements::_t( "PHP Extensions Not Found: %s" ), $extensions );
 		}
 	}
 	
@@ -316,9 +316,9 @@ if ( class_exists( 'WP_Requirements' ) === false ) {
 		}
 		
 		function getHeading() {
-			$html = WP_Requirements::_t( "<p>Minimum System Requirements not satisfied for: " );
+			$html = gfirem_requirements::_t( "<p>Minimum System Requirements not satisfied for: " );
 			$html .= "<strong>$this->pluginName</strong>.";
-			$html .= WP_Requirements::_t( " The plugins wont be activated.</p>" );
+			$html .= gfirem_requirements::_t( " The plugins wont be activated.</p>" );
 			
 			return $html;
 		}

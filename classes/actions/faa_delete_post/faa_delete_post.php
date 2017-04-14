@@ -8,7 +8,7 @@ class faa_delete_post extends faa_base {
 	public function __construct() {
 		parent::__construct(
 			'Delete Post',
-			'This action delete a post if the id exist',
+			'This Task delete a post if the id exist',
 			'faa_delete_post'
 		);
 	}

@@ -11,8 +11,8 @@ class faa_replace extends faa_base {
 		$this->assets_url = trailingslashit( str_replace( "\\", "/", plugin_dir_url( __FILE__ ) ) ) . 'assets/';
 		parent::__construct(
 			'Replace value',
-			'This action replace a value inside the selected form using a search value',
-			'faa_replace'
+			'This Task replace a value inside the selected form using a search value',
+			'faa_replace', 'professional'
 		);
 		
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
@@ -172,7 +172,7 @@ class faa_replace extends faa_base {
 		$current_field  = FrmField::getOne( $field_id );// Maybe (for efficiency) change this to a specific database call
 		$lookup_fields  = self::get_limited_lookup_fields_in_form( $form_id, $current_field->form_id );
 		
-		require( FAA_VIEW_PATH . '/watch-row.php' );
+		require( GFIREM_ACTION_AFTER_VIEW_PATH . '/watch-row.php' );
 		wp_die();
 	}
 	
