@@ -57,7 +57,7 @@ class faa_replace extends faa_base {
 			$rows[0]['field_replace'] = '';
 		}
 		
-		include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'action.php';
+		include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_replace_view.php';
 	}
 	
 	/**

@@ -1,3 +1,14 @@
+<?php
+/**
+ * @package    WordPress
+ * @subpackage Formidable, gfirem_action_after
+ * @author     GFireM
+ * @copyright  2017
+ * @link       http://www.gfirem.com
+ * @license    http://www.apache.org/licenses/
+ *
+ */
+?>
 <table action_id="<?php echo esc_attr( $action_control->number ) ?>" class="form-table frm-no-margin">
     <tbody id="fab-table-body">
     <tr class="faa_row">

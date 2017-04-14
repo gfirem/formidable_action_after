@@ -21,6 +21,8 @@ class faa_manager {
 				
 				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_base.php';
 				
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_reset_pass/faa_reset_pass.php';
+				new faa_reset_pass();
 				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_mycred/faa_mycred.php';
 				new faa_mycred();
 				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_replace/faa_replace.php';

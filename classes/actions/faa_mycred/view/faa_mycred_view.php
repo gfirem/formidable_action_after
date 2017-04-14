@@ -1,4 +1,14 @@
 <?php
+/**
+ * @package    WordPress
+ * @subpackage Formidable, gfirem_action_after
+ * @author     GFireM
+ * @copyright  2017
+ * @link       http://www.gfirem.com
+ * @license    http://www.apache.org/licenses/
+ *
+ */
+
 /** @var faa_mycred $this */
 if ( ! $this->is_mycred_active() ):
     _e('This task need myCRED be active!', 'gfirem_action_after');

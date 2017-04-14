@@ -35,7 +35,7 @@ class faa_mycred extends faa_base {
 	 * @param $action_control
 	 */
 	public function view( $form, $form_action, $action_control ) {
-		include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_mycred.php';
+		include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_mycred_view.php';
 	}
 	
 	/**

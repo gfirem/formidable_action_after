@@ -3,7 +3,7 @@ Contributors: gfirem
 Tags: formidable, formidable action, formidable wordpress actions, formidable action before, delete post, delete entry, replace entry values
 Requires at least: 4.6.2
 Tested up to: 4.7.3
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: Apache License 2.0
 License URI: http://www.apache.org/licenses/
 
