@@ -14,9 +14,9 @@ if ( ! $this->is_mycred_active() ):
     _e('This task need myCRED be active!', 'gfirem_action_after');
 else:
 	?>
-    <table action_id="<?php echo esc_attr( $action_control->number ) ?>" class="form-table frm-no-margin faa_replace faa_table_<?php echo esc_attr( $action_control->number ) ?>">
+    <table action_id="<?php echo esc_attr( $action_control->number ) ?>" class="form-table frm-no-margin">
         <tbody id="fab-table-body">
-        <tr class="faa_row">
+        <tr>
             <th>
                 <label for="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_amount' ) ) ?>">
                     <b><?php _e( 'Amount:', 'gfirem_action_after' ); ?></b>
@@ -27,7 +27,7 @@ else:
                 <input id="<?php echo esc_attr( $action_control->get_field_name( 'faa_delete_post' ) ) ?>" type="text" class="faa_field" value="<?php echo esc_attr( $form_action->post_content['faa_mycred_amount'] ); ?>" name="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_amount' ) ) ?>">
             </td>
         </tr>
-        <tr class="faa_row">
+        <tr>
             <th>
                 <label for="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_user' ) ) ?>">
                     <b><?php _e( 'User ID:', 'gfirem_action_after' ); ?></b>
@@ -38,7 +38,7 @@ else:
                 <input id="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_user' ) ) ?>" type="text" class="faa_field" value="<?php echo esc_attr( $form_action->post_content['faa_mycred_user'] ); ?>" name="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_user' ) ) ?>">
             </td>
         </tr>
-        <tr class="faa_row">
+        <tr>
             <th>
                 <label for="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_message' ) ) ?>">
                     <b><?php _e( 'Message:', 'gfirem_action_after' ); ?></b>

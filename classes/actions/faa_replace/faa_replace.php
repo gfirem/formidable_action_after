@@ -18,8 +18,8 @@ class faa_replace extends faa_base {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
 		//Get autocomplete row fields
-		add_action( "wp_ajax_nopriv_get_autocomplete_row", array( $this, "get_autocomplete_row" ) );
-		add_action( "wp_ajax_get_autocomplete_row", array( $this, "get_autocomplete_row" ) );
+		add_action( "wp_ajax_nopriv_faa_replace_get_autocomplete_row", array( $this, "get_autocomplete_row" ) );
+		add_action( "wp_ajax_faa_replace_get_autocomplete_row", array( $this, "get_autocomplete_row" ) );
 	}
 	
 	public function get_defaults() {
@@ -44,10 +44,11 @@ class faa_replace extends faa_base {
 					$rows[ $key ]['data']   = $this->get_forms( $item->form_target );
 					$rows[ $key ]['values'] = $item;
 					if ( ! empty( $item->field_filter ) ) {
-						$rows[ $key ]['field_filter'] = $this->get_field( intval( $item->field_filter ) );
+						
+						$rows[ $key ]['field_filter'] = ( is_numeric( $item->field_filter ) ) ? $this->get_field( intval( $item->field_filter ) ) : esc_attr( $item->field_filter );
 					}
 					if ( ! empty( $item->field_replace ) ) {
-						$rows[ $key ]['field_replace'] = $this->get_field( intval( $item->field_replace ) );
+						$rows[ $key ]['field_replace'] = ( is_numeric( $item->field_replace ) ) ? $this->get_field( intval( $item->field_replace ) ) : esc_attr( $item->field_replace );
 					}
 				}
 			}
@@ -73,7 +74,11 @@ class faa_replace extends faa_base {
 		$lookup_args['form_list'] = FrmForm::get_published_forms();
 		
 		if ( is_numeric( $fab_target_form_id ) ) {
-			$lookup_args['form_fields'] = FrmField::get_all_for_form( $fab_target_form_id );
+			$entry_id                   = new stdClass();
+			$entry_id->id               = 'id';
+			$entry_id->name             = __( 'Entry ID', 'gfirem_action_after' );
+			$entry_id->type             = 'hidden';
+			$lookup_args['form_fields'] = array_merge( array( $entry_id ), FrmField::get_all_for_form( $fab_target_form_id ) );
 		} else {
 			$lookup_args['form_fields'] = array();
 		}
@@ -85,6 +90,8 @@ class faa_replace extends faa_base {
 		$field_target = array();
 		if ( ! empty( $field_id ) && is_numeric( $field_id ) ) {
 			$field_target = FrmField::getOne( $field_id );
+		} else {
+			$field_target = $field_id;
 		}
 		
 		return $field_target;
@@ -114,27 +121,35 @@ class faa_replace extends faa_base {
 					if ( ! empty( $entry->metas ) ) {
 						$search_field_type = FrmField::get_type( $target->field_filter );
 						$result            = array();
-						if ( $search_field_type != 'data' ) {
-							$result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $target->field_filter, "LIKE" );
-						} else {
-							$search_field        = FrmField::getOne( $target->field_filter );
-							$search_target_field = FrmField::get_option( $search_field, 'form_select' );
-							if ( ! empty( $search_target_field ) ) {
-								$sub_result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $search_target_field, "LIKE" );
-								if ( ! empty( $sub_result ) && is_array( $sub_result ) ) {
-									foreach ( $sub_result as $sub_item ) {
-										$result = array_merge( $result, FrmEntryMeta::search_entry_metas( $sub_item, $target->field_filter, "LIKE" ) );
+						//Search for the entry
+						if ( $target->field_filter != 'id' ) {
+							if ( $search_field_type != 'data' ) {
+								$result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $target->field_filter, "LIKE" );
+							} else {
+								$search_field        = FrmField::getOne( $target->field_filter );
+								$search_target_field = FrmField::get_option( $search_field, 'form_select' );
+								if ( ! empty( $search_target_field ) ) {
+									$sub_result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $search_target_field, "LIKE" );
+									if ( ! empty( $sub_result ) && is_array( $sub_result ) ) {
+										foreach ( $sub_result as $sub_item ) {
+											$result = array_merge( $result, FrmEntryMeta::search_entry_metas( $sub_item, $target->field_filter, "LIKE" ) );
+										}
 									}
 								}
 							}
+						} else {
+							$result[0] = $target->field_filter_value;
 						}
+						//Iterate over each entry and update with the new value
 						if ( ! empty( $result ) && is_array( $result ) ) {
 							foreach ( $result as $item ) {
 								$full_item = FrmEntry::getOne( $item, true );
-								if ( ! empty( $full_item ) && ! empty( $full_item ) && is_array( $full_item->metas )
-								     && array_key_exists( $target->field_replace, $full_item->metas )
-								) {
-									$full_item->metas[ $target->field_replace ] = $target->field_replace_value;
+								if ( ! empty( $full_item ) && is_array( $full_item->metas ) ) {
+									if ( ! empty( $target->field_replace_value ) ) {
+										$full_item->metas[ $target->field_replace ] = $target->field_replace_value;
+									} else {
+										unset( $full_item->metas[ $target->field_replace ] );
+									}
 									FrmEntryMeta::update_entry_metas( $item, $full_item->metas );
 								}
 							}
@@ -172,7 +187,7 @@ class faa_replace extends faa_base {
 		$current_field  = FrmField::getOne( $field_id );// Maybe (for efficiency) change this to a specific database call
 		$lookup_fields  = self::get_limited_lookup_fields_in_form( $form_id, $current_field->form_id );
 		
-		require( GFIREM_ACTION_AFTER_VIEW_PATH . '/watch-row.php' );
+		include( GFIREM_ACTION_AFTER_VIEW_PATH . '/watch-row.php' );
 		wp_die();
 	}
 	
@@ -204,11 +219,17 @@ class faa_replace extends faa_base {
 			if ( FrmField::is_no_save_field( $field_option->type ) ) {
 				continue;
 			}
-			
-			if ( ! empty( $field ) && $field_option->id == $field->id ) {
-				$selected = ' selected="selected"';
-			} else {
-				$selected = '';
+			$selected = '';
+			if ( ! empty( $field ) ) {
+				if ( is_string( $field ) ) {
+					if ( $field_option->id == $field ) {
+						$selected = ' selected="selected"';
+					}
+				} else {
+					if ( $field_option->id == $field->id ) {
+						$selected = ' selected="selected"';
+					}
+				}
 			}
 			
 			$field_name = FrmAppHelper::truncate( $field_option->name, 30 );

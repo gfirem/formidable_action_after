@@ -21,7 +21,7 @@ function frmActionReplace() {
 			jQuery.ajax({
 				type: 'POST', url: ajaxurl,
 				data: {
-					action: 'get_autocomplete_row',
+					action: 'faa_replace_get_autocomplete_row',
 					form_id: formID,
 					field_type: fieldType,
 					nonce: frmGlobal.nonce
@@ -40,7 +40,7 @@ function frmActionReplace() {
 		jQuery('table.faa_replace').each(function (i, obj) {
 			var action_id = jQuery(this).attr('action_id');
 			if (action_id) {
-				var faa_targets = jQuery("[name='frm_formidable_action_after_action[" + action_id + "][post_content][faa_targets]']");
+				var faa_targets = jQuery("[name='frm_gfirem_action_after_action[" + action_id + "][post_content][faa_targets]']");
 				var fields_values = jQuery('table.faa_table_' + action_id + ' tr.faa_row').map(function (i, v) {
 					var $form_target = jQuery('.faa_form_target', this),
 						$field_filter = jQuery('.faa_field_filter', this),

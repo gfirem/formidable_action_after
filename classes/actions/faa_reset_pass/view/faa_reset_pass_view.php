@@ -9,9 +9,9 @@
  *
  */
 ?>
-<table action_id="<?php echo esc_attr( $action_control->number ) ?>" class="form-table frm-no-margin faa_replace faa_table_<?php echo esc_attr( $action_control->number ) ?>">
+<table action_id="<?php echo esc_attr( $action_control->number ) ?>" class="form-table frm-no-margin">
     <tbody id="fab-table-body">
-    <tr class="faa_row">
+    <tr>
         <th>
             <label for="<?php echo esc_attr( $action_control->get_field_name( 'faa_reset_pass_user_id' ) ) ?>">
                 <b><?php _e( 'User ID:', 'gfirem_action_after' ); ?></b>
@@ -23,7 +23,7 @@
             <p><?php _e( 'You can use this shortcode to get the user id from email: [password-get-user-id][field_id][/password-get-user-id]', 'gfirem_action_after' ); ?></p>
         </td>
     </tr>
-    <tr class="faa_row">
+    <tr>
         <th>
             <label for="<?php echo esc_attr( $action_control->get_field_name( 'faa_reset_pass_user_password' ) ) ?>">
                 <b><?php _e( 'Password', 'gfirem_action_after' ); ?></b>

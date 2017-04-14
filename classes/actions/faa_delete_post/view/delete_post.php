@@ -11,7 +11,7 @@
 ?>
 <table action_id="<?php echo esc_attr( $action_control->number ) ?>" class="form-table frm-no-margin">
     <tbody id="fab-table-body">
-    <tr class="faa_row">
+    <tr>
         <th>
             <label for="<?php echo esc_attr( $action_control->get_field_name( 'faa_delete_post' ) ) ?>"><b><?php _e( 'Post ID', 'gfirem_action_after' ); ?></b> </label>
         </th>
