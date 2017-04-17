@@ -35,7 +35,9 @@ class faa_reset_pass extends faa_base {
 	 * @param $action_control
 	 */
 	public function view( $form, $form_action, $action_control ) {
-		include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_reset_pass_view.php';
+		if(faa_fs::getFreemius()->is_plan__premium_only(faa_fs::$professional)) {
+			include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_reset_pass_view.php';
+		}
 	}
 	
 	/**
@@ -47,34 +49,36 @@ class faa_reset_pass extends faa_base {
 	 * @param $event
 	 */
 	public function process( $action, $entry, $form, $event ) {
-		try {
-			if ( ! empty( $action->post_content ) && ! empty( $action->post_content['faa_reset_pass_user_id'] )
-			     && ! empty( $action->post_content['faa_reset_pass_user_password'] )
-			) {
-				$args                         = array();
-				$faa_reset_pass_user_id       = "";
-				$faa_reset_pass_user_password = "";
-				$action_fields                = array( "faa_reset_pass_user_id", "faa_reset_pass_user_password" );
-				
-				foreach ( $action_fields as $act_field ) {
-					$act_content = $action->post_content[ $act_field ];
-					$shortCodes  = FrmFieldsHelper::get_shortcodes( $act_content, $entry->form_id );
-					$content     = apply_filters( 'frm_replace_content_shortcodes', $act_content, FrmEntry::getOne( $entry->id ), $shortCodes );
-					FrmProFieldsHelper::replace_non_standard_formidable_shortcodes( array(), $content );
-					$args[ $act_field ] = do_shortcode( $content );
-				}
-				
-				extract( $args );
-				$user_obj = get_userdata( $faa_reset_pass_user_id );
-				if ( ! empty( $faa_reset_pass_user_id ) && $user_obj != false ) {
-					if ( empty( $faa_reset_pass_user_password ) ) {
-						$faa_reset_pass_user_password = wp_generate_password();
+		if(faa_fs::getFreemius()->is_plan__premium_only(faa_fs::$professional)) {
+			try {
+				if ( ! empty( $action->post_content ) && ! empty( $action->post_content['faa_reset_pass_user_id'] )
+				     && ! empty( $action->post_content['faa_reset_pass_user_password'] )
+				) {
+					$args                         = array();
+					$faa_reset_pass_user_id       = "";
+					$faa_reset_pass_user_password = "";
+					$action_fields                = array( "faa_reset_pass_user_id", "faa_reset_pass_user_password" );
+					
+					foreach ( $action_fields as $act_field ) {
+						$act_content = $action->post_content[ $act_field ];
+						$shortCodes  = FrmFieldsHelper::get_shortcodes( $act_content, $entry->form_id );
+						$content     = apply_filters( 'frm_replace_content_shortcodes', $act_content, FrmEntry::getOne( $entry->id ), $shortCodes );
+						FrmProFieldsHelper::replace_non_standard_formidable_shortcodes( array(), $content );
+						$args[ $act_field ] = do_shortcode( $content );
 					}
-					wp_set_password( $faa_reset_pass_user_password, $faa_reset_pass_user_id );
+					
+					extract( $args );
+					$user_obj = get_userdata( $faa_reset_pass_user_id );
+					if ( ! empty( $faa_reset_pass_user_id ) && $user_obj != false ) {
+						if ( empty( $faa_reset_pass_user_password ) ) {
+							$faa_reset_pass_user_password = wp_generate_password();
+						}
+						wp_set_password( $faa_reset_pass_user_password, $faa_reset_pass_user_id );
+					}
 				}
+			} catch ( Exception $ex ) {
+				$this->show_error( $ex->getMessage() );
 			}
-		} catch ( Exception $ex ) {
-			$this->show_error( $ex->getMessage() );
 		}
 	}
 	

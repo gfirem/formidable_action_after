@@ -10,7 +10,7 @@ class faa_manager {
 	protected static $version;
 	
 	public function __construct() {
-		self::$version = '1.0.0';
+		self::$version = '1.1.6';
 		
 		require_once GFIREM_ACTION_AFTER_CLASSES_PATH . 'faa_log.php';
 		

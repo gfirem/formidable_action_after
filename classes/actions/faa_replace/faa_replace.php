@@ -34,31 +34,33 @@ class faa_replace extends faa_base {
 	 * @param $action_control
 	 */
 	public function view( $form, $form_action, $action_control ) {
-		$main_form  = $form->id;
-		$rows       = array();
-		$fab_target = "";
-		if ( ! empty( $form_action->post_content['faa_targets'] ) ) {
-			$fab_target = json_decode( $form_action->post_content['faa_targets'] );
-			if ( ! empty( $fab_target ) && is_array( $fab_target ) ) {
-				foreach ( $fab_target as $key => $item ) {
-					$rows[ $key ]['data']   = $this->get_forms( $item->form_target );
-					$rows[ $key ]['values'] = $item;
-					if ( ! empty( $item->field_filter ) ) {
-						
-						$rows[ $key ]['field_filter'] = ( is_numeric( $item->field_filter ) ) ? $this->get_field( intval( $item->field_filter ) ) : esc_attr( $item->field_filter );
-					}
-					if ( ! empty( $item->field_replace ) ) {
-						$rows[ $key ]['field_replace'] = ( is_numeric( $item->field_replace ) ) ? $this->get_field( intval( $item->field_replace ) ) : esc_attr( $item->field_replace );
+		if(faa_fs::getFreemius()->is_plan__premium_only(faa_fs::$professional)) {
+			$main_form  = $form->id;
+			$rows       = array();
+			$fab_target = "";
+			if ( ! empty( $form_action->post_content['faa_targets'] ) ) {
+				$fab_target = json_decode( $form_action->post_content['faa_targets'] );
+				if ( ! empty( $fab_target ) && is_array( $fab_target ) ) {
+					foreach ( $fab_target as $key => $item ) {
+						$rows[ $key ]['data']   = $this->get_forms( $item->form_target );
+						$rows[ $key ]['values'] = $item;
+						if ( ! empty( $item->field_filter ) ) {
+							
+							$rows[ $key ]['field_filter'] = ( is_numeric( $item->field_filter ) ) ? $this->get_field( intval( $item->field_filter ) ) : esc_attr( $item->field_filter );
+						}
+						if ( ! empty( $item->field_replace ) ) {
+							$rows[ $key ]['field_replace'] = ( is_numeric( $item->field_replace ) ) ? $this->get_field( intval( $item->field_replace ) ) : esc_attr( $item->field_replace );
+						}
 					}
 				}
+			} else {
+				$rows[0]['data']          = $this->get_forms( '' );
+				$rows[0]['field_filter']  = '';
+				$rows[0]['field_replace'] = '';
 			}
-		} else {
-			$rows[0]['data']          = $this->get_forms( '' );
-			$rows[0]['field_filter']  = '';
-			$rows[0]['field_replace'] = '';
+			
+			include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_replace_view.php';
 		}
-		
-		include dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'faa_replace_view.php';
 	}
 	
 	/**
@@ -106,51 +108,53 @@ class faa_replace extends faa_base {
 	 * @param $event
 	 */
 	public function process( $action, $entry, $form, $event ) {
-		if ( ! empty( $action->post_content ) && ! empty( $action->post_content['faa_targets'] ) ) {
-			$fab_target = json_decode( $action->post_content['faa_targets'] );
-			if ( ! empty( $fab_target ) && is_array( $fab_target ) ) {
-				foreach ( $fab_target as $target ) {
-					$target->field_filter_value  = $this->replace_shortcode( $entry, $target->field_filter_value );
-					$target->field_replace_value = $this->replace_shortcode( $entry, $target->field_replace_value );
-					$repeat_fields               = FrmProFormsHelper::has_repeat_field( $target->form_target, false );
-					$existing_repeat_field       = array();
-					foreach ( $repeat_fields as $id => $field ) {
-						$existing_repeat_field[] = $field->id;
-					}
-					
-					if ( ! empty( $entry->metas ) ) {
-						$search_field_type = FrmField::get_type( $target->field_filter );
-						$result            = array();
-						//Search for the entry
-						if ( $target->field_filter != 'id' ) {
-							if ( $search_field_type != 'data' ) {
-								$result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $target->field_filter, "LIKE" );
-							} else {
-								$search_field        = FrmField::getOne( $target->field_filter );
-								$search_target_field = FrmField::get_option( $search_field, 'form_select' );
-								if ( ! empty( $search_target_field ) ) {
-									$sub_result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $search_target_field, "LIKE" );
-									if ( ! empty( $sub_result ) && is_array( $sub_result ) ) {
-										foreach ( $sub_result as $sub_item ) {
-											$result = array_merge( $result, FrmEntryMeta::search_entry_metas( $sub_item, $target->field_filter, "LIKE" ) );
+		if(faa_fs::getFreemius()->is_plan__premium_only(faa_fs::$professional)) {
+			if ( ! empty( $action->post_content ) && ! empty( $action->post_content['faa_targets'] ) ) {
+				$fab_target = json_decode( $action->post_content['faa_targets'] );
+				if ( ! empty( $fab_target ) && is_array( $fab_target ) ) {
+					foreach ( $fab_target as $target ) {
+						$target->field_filter_value  = $this->replace_shortcode( $entry, $target->field_filter_value );
+						$target->field_replace_value = $this->replace_shortcode( $entry, $target->field_replace_value );
+						$repeat_fields               = FrmProFormsHelper::has_repeat_field( $target->form_target, false );
+						$existing_repeat_field       = array();
+						foreach ( $repeat_fields as $id => $field ) {
+							$existing_repeat_field[] = $field->id;
+						}
+						
+						if ( ! empty( $entry->metas ) ) {
+							$search_field_type = FrmField::get_type( $target->field_filter );
+							$result            = array();
+							//Search for the entry
+							if ( $target->field_filter != 'id' ) {
+								if ( $search_field_type != 'data' ) {
+									$result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $target->field_filter, "LIKE" );
+								} else {
+									$search_field        = FrmField::getOne( $target->field_filter );
+									$search_target_field = FrmField::get_option( $search_field, 'form_select' );
+									if ( ! empty( $search_target_field ) ) {
+										$sub_result = FrmEntryMeta::search_entry_metas( $target->field_filter_value, $search_target_field, "LIKE" );
+										if ( ! empty( $sub_result ) && is_array( $sub_result ) ) {
+											foreach ( $sub_result as $sub_item ) {
+												$result = array_merge( $result, FrmEntryMeta::search_entry_metas( $sub_item, $target->field_filter, "LIKE" ) );
+											}
 										}
 									}
 								}
+							} else {
+								$result[0] = $target->field_filter_value;
 							}
-						} else {
-							$result[0] = $target->field_filter_value;
-						}
-						//Iterate over each entry and update with the new value
-						if ( ! empty( $result ) && is_array( $result ) ) {
-							foreach ( $result as $item ) {
-								$full_item = FrmEntry::getOne( $item, true );
-								if ( ! empty( $full_item ) && is_array( $full_item->metas ) ) {
-									if ( ! empty( $target->field_replace_value ) ) {
-										$full_item->metas[ $target->field_replace ] = $target->field_replace_value;
-									} else {
-										unset( $full_item->metas[ $target->field_replace ] );
+							//Iterate over each entry and update with the new value
+							if ( ! empty( $result ) && is_array( $result ) ) {
+								foreach ( $result as $item ) {
+									$full_item = FrmEntry::getOne( $item, true );
+									if ( ! empty( $full_item ) && is_array( $full_item->metas ) ) {
+										if ( ! empty( $target->field_replace_value ) ) {
+											$full_item->metas[ $target->field_replace ] = $target->field_replace_value;
+										} else {
+											unset( $full_item->metas[ $target->field_replace ] );
+										}
+										FrmEntryMeta::update_entry_metas( $item, $full_item->metas );
 									}
-									FrmEntryMeta::update_entry_metas( $item, $full_item->metas );
 								}
 							}
 						}
