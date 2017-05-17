@@ -13,7 +13,7 @@ class faa_manager {
 		self::$version = '1.1.6';
 		
 		require_once GFIREM_ACTION_AFTER_CLASSES_PATH . 'faa_log.php';
-		
+		new faa_log();
 		try {
 			if ( self::is_formidable_active() ) {
 				include GFIREM_ACTION_AFTER_CLASSES_PATH . 'faa_admin.php';

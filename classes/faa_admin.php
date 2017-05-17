@@ -1,5 +1,8 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class faa_admin {
 	public function __construct() {
