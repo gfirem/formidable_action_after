@@ -31,6 +31,8 @@ class faa_manager {
 				new faa_delete_entry();
 				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_delete_post/faa_delete_post.php';
 				new faa_delete_post();
+				include GFIREM_ACTION_AFTER_ACTIONS_PATH . 'faa_webmerge/faa_webmerge.php';
+				new faa_webmerge();
 				
 				add_action( 'frm_registered_form_actions', array( $this, 'register_action' ) );
 			} else {
