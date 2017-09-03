@@ -15,7 +15,7 @@ Add an Action inside Formidable with different task to execute like remove entry
 == Changelog ==
 
 = 1.2.0 =
-Adding an integration with webmerge. Adding a new task to delete users.
+Adding an integration with webmerge.
 
 = 1.1.6 =
 Cleaning the professional code.
