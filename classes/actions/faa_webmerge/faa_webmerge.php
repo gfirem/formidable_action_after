@@ -76,13 +76,13 @@ class faa_webmerge extends faa_base {
 				$fields = FrmField::get_all_for_form( $form->id );
 				$args   = array();
 				foreach ( $fields as $field ) {
-					if ( ! empty( $_POST['item_meta'][ $field->id ] ) ) {
+					if ( ! empty( $entry->metas[ $field->id ] ) ) {
 						$webmerge_name = $field->field_key;
 						$name          = FrmField::get_option( $field, 'webmerge_name' );
 						if ( ! empty( $name ) ) {
 							$webmerge_name = $name;
 						}
-						$args[ $webmerge_name ] = $_POST['item_meta'][ $field->id ];
+						$args[ $webmerge_name ] = $entry->metas[ $field->id ];
 					}
 				}
 				if ( ! empty( $args ) ) {
