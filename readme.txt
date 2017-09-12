@@ -3,7 +3,7 @@ Contributors: gfirem
 Tags: formidable, formidable action, formidable wordpress actions, formidable action before, delete post, delete entry, replace entry values
 Requires at least: 4.6.2
 Tested up to: 4.7.3
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: Apache License 2.0
 License URI: http://www.apache.org/licenses/
 
@@ -13,6 +13,10 @@ Add an Action inside Formidable with different task to execute.
 Add an Action inside Formidable with different task to execute like remove entry or post, replace data from other form. More task will be added by user request.
 
 == Changelog ==
+
+= 1.2.1 =
+Fixing webmerge to trigger from the external form, like when the copy action update te form.
+Updating freemius.
 
 = 1.2.0 =
 Adding an integration with webmerge.
