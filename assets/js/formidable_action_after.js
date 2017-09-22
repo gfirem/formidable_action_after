@@ -74,21 +74,24 @@ function frmActionAfter() {
 
 			jQuery(document).bind('ajaxComplete ', function (event, xhr, settings) {
 				if (controller == false) {
-					if (settings.data.indexOf('frm_form_action_fill') != 0 && settings.data.indexOf('gfirem_action_after') != 0) {
-						$formActions.on('click', '.faa_action', onShowContainer);
-						jQuery(document).on('focusin click', 'form input, form textarea, #wpcontent', function (e) {
-							e.stopPropagation();
-							if (jQuery(this).is(':not(:submit, input[type=button])') && jQuery(this).hasClass("faa_field")) {
-								var id = jQuery(this).attr('id');
-								myToggleAllowedShortCodes(id);
-								jQuery('.frm_code_list a').removeClass('frm_noallow').addClass('frm_allow');
-								jQuery('.frm_code_list a.hide_' + id).addClass('frm_noallow').removeClass('frm_allow');
-							} else {
-								jQuery('.frm_code_list a').addClass('frm_noallow').removeClass('frm_allow');
-							}
-						});
-						controller = true;
+					if(settings.data){
+						if (settings.data.indexOf('frm_form_action_fill') != 0 && settings.data.indexOf('gfirem_action_after') != 0) {
+							$formActions.on('click', '.faa_action', onShowContainer);
+							jQuery(document).on('focusin click', 'form input, form textarea, #wpcontent', function (e) {
+								e.stopPropagation();
+								if (jQuery(this).is(':not(:submit, input[type=button])') && jQuery(this).hasClass("faa_field")) {
+									var id = jQuery(this).attr('id');
+									myToggleAllowedShortCodes(id);
+									jQuery('.frm_code_list a').removeClass('frm_noallow').addClass('frm_allow');
+									jQuery('.frm_code_list a.hide_' + id).addClass('frm_noallow').removeClass('frm_allow');
+								} else {
+									jQuery('.frm_code_list a').addClass('frm_noallow').removeClass('frm_allow');
+								}
+							});
+							controller = true;
+						}
 					}
+
 				}
 			});
 		}
