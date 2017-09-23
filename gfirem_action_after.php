@@ -7,7 +7,7 @@
  * @wordpress-plugin
  * Plugin Name:       GFireM Action After
  * Description:       Add a Formidable Action with different task to execute inside, like delete user or post, replace value...
- * Version:           1.2.1
+ * Version:           1.2.2
  * Author:            gfirem
  * License:           Apache License 2.0
  * License URI:       http://www.apache.org/licenses/
