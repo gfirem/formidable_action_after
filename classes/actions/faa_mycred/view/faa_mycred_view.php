@@ -24,7 +24,7 @@ else:
                 </label>
             </th>
             <td>
-                <input id="<?php echo esc_attr( $action_control->get_field_name( 'faa_delete_post' ) ) ?>" type="text" class="faa_field" value="<?php echo esc_attr( $form_action->post_content['faa_mycred_amount'] ); ?>" name="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_amount' ) ) ?>">
+                <input id="<?php echo esc_attr( $action_control->get_field_name( 'faa_delete_user' ) ) ?>" type="text" class="faa_field" value="<?php echo esc_attr( $form_action->post_content['faa_mycred_amount'] ); ?>" name="<?php echo esc_attr( $action_control->get_field_name( 'faa_mycred_amount' ) ) ?>">
             </td>
         </tr>
         <tr>
